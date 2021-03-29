@@ -32,6 +32,7 @@ def test_single_line_range():
     line_range = github_permalink.LineRange(10, 10)
     assert str(line_range) == "L10"
 
+
 def test_multiple_line_range():
-    line_range = github_permalink.LineRange(7, 99)   
+    line_range = github_permalink.LineRange(7, 99)
     assert str(line_range) == "L7-L99"
