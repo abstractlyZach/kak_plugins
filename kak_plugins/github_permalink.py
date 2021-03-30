@@ -6,10 +6,11 @@ import collections
 
 class LineRange(object):
     """Describes a range of lines"""
+
     def __init__(self, start: int, stop: int):
         if stop < start:
             # LineRanges are dumb objects and should always have start/stop ordered
-            raise ValueError(f"Invalid range. {stop} > {start}")
+            raise ValueError(f"Invalid range. {stop} < {start}")
         if start < 1:
             # kakoune and github start their line counts at 1
             raise ValueError(f"Invalid range start. {start} < 0")
@@ -24,7 +25,6 @@ class LineRange(object):
 
     def __eq__(self, other):
         return self._start, self._stop == other._start, other._stop
-
 
 
 def parse_selection_desc(selection_desc: str) -> LineRange:
