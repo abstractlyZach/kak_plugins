@@ -1,5 +1,4 @@
 from kak_plugins import __version__
-from kak_plugins import script
 
 
 def test_version():
