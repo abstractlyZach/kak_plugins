@@ -1,10 +1,10 @@
 #! python
 
-import typing
+import collections
 import os
 
 import sys
-import collections
+import typing
 import git
 from .apis import git as git_api
 

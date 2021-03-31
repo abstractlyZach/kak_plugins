@@ -1,8 +1,8 @@
-import pytest
 import typing
+from kak_plugins.apis import git
 from unittest import mock
 
-from kak_plugins.apis import git
+import pytest
 
 
 class FakeRepo(object):

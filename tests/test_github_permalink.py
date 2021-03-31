@@ -1,5 +1,6 @@
-import pytest
 from kak_plugins import github_permalink
+
+import pytest
 
 
 def test_single_line_permalink():
@@ -73,4 +74,3 @@ def test_parse_kak_output():
     path, selection_desc = github_permalink._parse_kak_output(output)
     assert path == expected_path
     assert selection_desc == expected_selection_desc
-
