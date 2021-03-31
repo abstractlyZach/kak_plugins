@@ -1,6 +1,6 @@
 import pytest
 import typing
-from unittest import mock 
+from unittest import mock
 
 from kak_plugins.apis import git
 
@@ -19,13 +19,22 @@ class FakeRepo(object):
 
 def test_init():
     """Raises no exceptions"""
-    git.Repo("abc")
+    git.RepoApi("abc")
 
 
 def test_current_branch():
-    repo = git.Repo(FakeRepo(active_branch='mybranch'))
-    assert repo.get_current_branch() == 'mybranch'
+    repo = git.RepoApi(FakeRepo(active_branch="mybranch"))
+    assert repo.get_current_branch() == "mybranch"
 
-def test_remote_url():
-    repo = git.Repo(FakeRepo(remote_url='url'))
-    assert repo.get_github_url() == 'abc'
+
+def test_remote_ssh_url():
+    repo = git.RepoApi(
+        FakeRepo(remote_url="git@github.com:abstractlyZach/kak_plugins.git")
+    )
+    assert repo.get_github_url() == "https://github.com/abstractlyZach/kak_plugins"
+
+def test_remote_https_url():
+    repo = git.RepoApi(
+        FakeRepo(remote_url="https://github.com/abstractlyZach/kak_plugins.git")
+    )
+    assert repo.get_github_url() == "https://github.com/abstractlyZach/kak_plugins"
