@@ -1,11 +1,11 @@
 #! python
-
 import collections
 import os
-
 import sys
 import typing
+
 import git
+
 from .apis import git as git_api
 
 
@@ -32,6 +32,31 @@ class LineRange(object):
         return self._start, self._stop == other._start, other._stop
 
 
+def main():
+    # read from pipe
+    for line in sys.stdin:
+        path, selection_desc = _parse_kak_output(line)
+        permalink = get_permalink(path, selection_desc)
+        print(permalink)
+
+
+def _parse_kak_output(kak_output: str) -> typing.Tuple[str]:
+    """Parse the output of `kcr get --value buffile --value selection_desc`
+    into path and selection_desc
+    """
+    stripped_output = kak_output.lstrip('["').rstrip('"]')
+    return stripped_output.split('","')
+
+
+def get_permalink(path, selection_desc):
+    repo = git_api.RepoApi(git.Repo("."))
+    branch = repo.get_current_branch()
+    base_url = repo.get_github_url()
+    line_range = parse_selection_desc(selection_desc)
+    relative_path = _convert_to_relative_path(path)
+    return _assemble_permalink(base_url, branch, relative_path, line_range)
+
+
 def parse_selection_desc(selection_desc: str) -> LineRange:
     """Parse a selction description from kakoune into a LineRange"""
     anchor_pos, cursor_pos = selection_desc.split(",")
@@ -45,29 +70,5 @@ def _convert_to_relative_path(path: str) -> str:
     return os.path.relpath(path, os.getcwd())
 
 
-def get_permalink(path, selection_desc):
-    repo = git_api.RepoApi(git.Repo("."))
-    branch = repo.get_current_branch()
-    base_url = repo.get_github_url()
-    line_range = parse_selection_desc(selection_desc)
-    relative_path = _convert_to_relative_path(path)
-    return _assemble_permalink(base_url, branch, relative_path, line_range)
-
-
 def _assemble_permalink(base_url: str, branch: str, path: str, line_range: LineRange):
     return f"{base_url}/blob/{branch}/{path}#{line_range}"
-
-
-def _parse_kak_output(kak_output: str) -> typing.Tuple[str]:
-    """Parse the output of `kcr get --value buffile --value selection_desc`
-    into path and selection_desc
-    """
-    stripped_output = kak_output.lstrip('["').rstrip('"]')
-    return stripped_output.split('","')
-
-def main():
-    # read from pipe
-    for line in sys.stdin:
-        path, selection_desc = _parse_kak_output(line)
-        permalink = get_permalink(path, selection_desc)
-        print(permalink)
