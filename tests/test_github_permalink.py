@@ -3,7 +3,7 @@ from kak_plugins import github_permalink
 
 
 def test_single_line_permalink():
-    permalink = github_permalink.get_permalink(
+    permalink = github_permalink._assemble_permalink(
         "https://github.com/abstractlyZach/kak_plugins",
         "main",
         "poetry.lock",
@@ -16,7 +16,7 @@ def test_single_line_permalink():
 
 
 def test_range_permalink():
-    permalink = github_permalink.get_permalink(
+    permalink = github_permalink._assemble_permalink(
         "https://github.com/abstractlyZach/kak_plugins",
         "main",
         "test/test_github_permalink.py",
@@ -65,3 +65,12 @@ def test_parse_backwards_selection():
     input_str = "50.20,29.99"
     line_range = github_permalink.parse_selection_desc(input_str)
     assert line_range == github_permalink.LineRange(29, 50)
+
+def test_parse_kak_output():
+    expected_path =  "/home/zach/workspace/kak_plugins/kak_plugins/github_permalink.py"
+    expected_selection_desc = "41.1,41.1"
+    output = f'["{expected_path}","{expected_selection_desc}"]'
+    path, selection_desc = github_permalink._parse_kak_output(output)
+    assert path == expected_path
+    assert selection_desc == expected_selection_desc
+

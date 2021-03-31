@@ -1,7 +1,12 @@
 #! python
 
+import typing
+import os
+
 import sys
 import collections
+import git
+from .apis import git as git_api
 
 
 class LineRange(object):
@@ -35,12 +40,34 @@ def parse_selection_desc(selection_desc: str) -> LineRange:
     return LineRange(min(anchor_line, cursor_line), max(anchor_line, cursor_line))
 
 
-def get_permalink(base_url: str, branch: str, path: str, line_range: LineRange):
+def _convert_to_relative_path(path: str) -> str:
+    """Convert an absolute or relative path to its relative path"""
+    return os.path.relpath(path, os.getcwd())
+
+
+def get_permalink(path, selection_desc):
+    repo = git_api.RepoApi(git.Repo("."))
+    branch = repo.get_current_branch()
+    base_url = repo.get_github_url()
+    line_range = parse_selection_desc(selection_desc)
+    relative_path = _convert_to_relative_path(path)
+    return _assemble_permalink(base_url, branch, relative_path, line_range)
+
+
+def _assemble_permalink(base_url: str, branch: str, path: str, line_range: LineRange):
     return f"{base_url}/blob/{branch}/{path}#{line_range}"
 
 
-if __name__ == "__main__":
+def _parse_kak_output(kak_output: str) -> typing.Tuple[str]:
+    """Parse the output of `kcr get --value buffile --value selection_desc`
+    into path and selection_desc
+    """
+    stripped_output = kak_output.lstrip('["').rstrip('"]')
+    return stripped_output.split('","')
+
+def main():
     # read from pipe
     for line in sys.stdin:
-        line_range = get_line_range(line)
-        print(get_permalink(line_range))
+        path, selection_desc = _parse_kak_output(line)
+        permalink = get_permalink(path, selection_desc)
+        print(permalink)
