@@ -3,6 +3,11 @@ name = "kak_plugins"
 version = "0.1.0"
 description = ""
 authors = ["abstractlyZach <zach3lee@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/abstractlyZach/kak_plugins"
+repository = "https://github.com/abstractlyZach/kak_plugins"
+keywords = ["kakoune", "plugin"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
