@@ -1,2 +1,8 @@
 test:
 	poetry run pytest --cov
+
+format:
+	# reformat all files
+	poetry run black .
+	fd --extension py \
+	| xargs poetry run reorder-python-imports --exit-zero-even-if-changed
