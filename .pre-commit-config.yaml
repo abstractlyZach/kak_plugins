@@ -13,3 +13,10 @@ repos:
         entry: poetry run black
         language: system
         types: [python]
+-   repo: local
+    hooks:
+    -   id: reorder-python-imports
+        name: reorder-python-imports
+        entry: poetry run reorder-python-imports
+        language: system
+        types: [python]
