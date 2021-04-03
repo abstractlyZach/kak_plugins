@@ -2,8 +2,6 @@ import typing
 from kak_plugins.apis import git
 from unittest import mock
 
-import pytest
-
 
 class FakeRepo(object):
     """A fake of the PythonGit repo class"""

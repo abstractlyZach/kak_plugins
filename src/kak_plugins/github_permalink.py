@@ -1,5 +1,4 @@
 #! python
-import collections
 import os
 import sys
 import typing
