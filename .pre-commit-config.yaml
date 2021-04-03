@@ -8,15 +8,8 @@ repos:
     -   id: trailing-whitespace
 -   repo: local
     hooks:
-    -   id: black
-        name: black
-        entry: poetry run black
-        language: system
-        types: [python]
--   repo: local
-    hooks:
-    -   id: reorder-python-imports
-        name: reorder-python-imports
-        entry: poetry run reorder-python-imports
+    -   id: autoformat
+        name: Automatically format python code
+        entry: make format
         language: system
         types: [python]
