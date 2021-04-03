@@ -22,5 +22,5 @@ class RepoApi(object):
             if remote_url.startswith(ssh_login):
                 remote_url = remote_url.lstrip(ssh_login)
                 remote_url = URL_REPLACEMENTS[ssh_login] + remote_url
-        remote_url = remote_url.rstrip('.git')
+        remote_url = remote_url.rstrip(".git")
         return remote_url

@@ -1,8 +1,7 @@
 import typing
-from kak_plugins.apis import git
 from unittest import mock
 
-import pytest
+from kak_plugins.apis import git
 
 
 class FakeRepo(object):
@@ -32,6 +31,7 @@ def test_remote_ssh_url():
         FakeRepo(remote_url="git@github.com:abstractlyZach/kak_plugins.git")
     )
     assert repo.get_github_url() == "https://github.com/abstractlyZach/kak_plugins"
+
 
 def test_remote_https_url():
     repo = git.RepoApi(
