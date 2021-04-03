@@ -7,7 +7,7 @@ URL_REPLACEMENTS = {"git@github.com:": "https://github.com/"}
 class RepoApi(object):
     """wrapper class for git.Repo"""
 
-    def __init__(self, repo: git.Repo):
+    def __init__(self, repo: git.Repo) -> None:
         self._repo = repo
 
     def get_current_branch(self) -> str:

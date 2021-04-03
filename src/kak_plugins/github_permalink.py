@@ -11,7 +11,7 @@ from .apis import git as git_api
 class LineRange(object):
     """Describes a range of lines"""
 
-    def __init__(self, start: int, stop: int):
+    def __init__(self, start: int, stop: int) -> None:
         if stop < start:
             # LineRanges are dumb objects and should always have start/stop ordered
             raise ValueError(f"Invalid range. {stop} < {start}")
@@ -21,17 +21,17 @@ class LineRange(object):
         self._start = start
         self._stop = stop
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self._start == self._stop:
             return f"L{self._start}"
         else:
             return f"L{self._start}-L{self._stop}"
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         return self._start, self._stop == other._start, other._stop
 
 
-def main():
+def main() -> None:
     # read from pipe
     for line in sys.stdin:
         path, selection_desc = _parse_kak_output(line)
@@ -47,7 +47,7 @@ def _parse_kak_output(kak_output: str) -> typing.Iterable[str]:
     return stripped_output.split('","')
 
 
-def get_permalink(path, selection_desc):
+def get_permalink(path: str, selection_desc: str) -> str:
     repo = git_api.RepoApi(git.Repo("."))
     branch = repo.get_current_branch()
     base_url = repo.get_github_url()
@@ -69,5 +69,7 @@ def _convert_to_relative_path(path: str) -> str:
     return os.path.relpath(path, os.getcwd())
 
 
-def _assemble_permalink(base_url: str, branch: str, path: str, line_range: LineRange):
+def _assemble_permalink(
+    base_url: str, branch: str, path: str, line_range: LineRange
+) -> str:
     return f"{base_url}/blob/{branch}/{path}#{line_range}"
