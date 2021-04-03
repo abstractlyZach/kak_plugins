@@ -1,6 +1,6 @@
-from kak_plugins import github_permalink
-
 import pytest
+
+from kak_plugins import github_permalink
 
 
 def test_single_line_permalink():
