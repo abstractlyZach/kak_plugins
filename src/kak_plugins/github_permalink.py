@@ -39,7 +39,7 @@ def main():
         print(permalink)
 
 
-def _parse_kak_output(kak_output: str) -> typing.Tuple[str]:
+def _parse_kak_output(kak_output: str) -> typing.Iterable[str]:
     """Parse the output of `kcr get --value buffile --value selection_desc`
     into path and selection_desc
     """
