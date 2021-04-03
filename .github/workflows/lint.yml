@@ -1,7 +1,7 @@
-name: Tests
+name: Lint
 on: push
 jobs:
-    tests:
+    lint:
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v2
@@ -11,4 +11,4 @@ jobs:
               architecture: x64
         - run: pip install poetry
         - run: poetry install
-        - run: make test
+        - run: make lint
