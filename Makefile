@@ -9,3 +9,6 @@ format:
 
 lint:
 	poetry run flake8
+
+typecheck:
+	poetry run mypy .
