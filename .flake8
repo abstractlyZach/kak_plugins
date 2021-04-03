@@ -1,6 +1,6 @@
 [flake8]
-select = B,B9,BLK,C,E,F,W,I,S
-ignore = E203,E501,W503
+select = ANN,B,B9,BLK,C,E,F,W,I,S
+ignore = E203,E501,W503,ANN101
 # mccabe complexity checker
 max-complexity = 10
 max-line-length = 90
@@ -8,4 +8,4 @@ max-line-length = 90
 application-import-names = kak_plugins,tests
 import-order-style = google
 # allow asserts in tests
-per-file-ignores = tests/*:S101
+per-file-ignores = tests/*:S101,ANN
