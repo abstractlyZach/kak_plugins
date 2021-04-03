@@ -33,6 +33,7 @@ def test_remote_ssh_url():
     )
     assert repo.get_github_url() == "https://github.com/abstractlyZach/kak_plugins"
 
+
 def test_remote_https_url():
     repo = git.RepoApi(
         FakeRepo(remote_url="https://github.com/abstractlyZach/kak_plugins.git")

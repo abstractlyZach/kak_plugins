@@ -67,8 +67,9 @@ def test_parse_backwards_selection():
     line_range = github_permalink.parse_selection_desc(input_str)
     assert line_range == github_permalink.LineRange(29, 50)
 
+
 def test_parse_kak_output():
-    expected_path =  "/home/zach/workspace/kak_plugins/kak_plugins/github_permalink.py"
+    expected_path = "/home/zach/workspace/kak_plugins/kak_plugins/github_permalink.py"
     expected_selection_desc = "41.1,41.1"
     output = f'["{expected_path}","{expected_selection_desc}"]'
     path, selection_desc = github_permalink._parse_kak_output(output)

@@ -2,4 +2,3 @@
 [![PyPI](https://img.shields.io/pypi/v/kak-plugins.svg)](https://pypi.org/project/kak-plugins/)
 
 # kak_plugins
-
