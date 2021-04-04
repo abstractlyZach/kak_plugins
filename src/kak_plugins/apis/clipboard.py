@@ -12,12 +12,7 @@ def get_clipboard_command() -> str:
         return clipboard
 
 
-default_clipboard_command = get_clipboard_command()
-
-
-def write_to_clipboard(
-    message: str, clipboard_command: str = default_clipboard_command
-) -> None:
+def write_to_clipboard(message: str, clipboard_command: str) -> None:
     template = pipes.Template()
     # takes in input and writes no output
     template.append(clipboard_command, "-.")

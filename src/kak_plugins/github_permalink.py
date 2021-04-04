@@ -5,6 +5,7 @@ import typing
 
 import git
 
+from .apis import clipboard
 from .apis import git as git_api
 
 
@@ -34,11 +35,12 @@ class LineRange(object):
 
 
 def main() -> None:
+    clipboard_command = clipboard.get_clipboard_command()
     # read from pipe
     for line in sys.stdin:
         path, selection_desc = _parse_kak_output(line)
         permalink = get_permalink(path, selection_desc)
-        print(permalink)
+        clipboard.write_to_clipboard(permalink, clipboard_command)
 
 
 def _parse_kak_output(kak_output: str) -> typing.Iterable[str]:
