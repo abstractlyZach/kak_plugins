@@ -46,7 +46,7 @@ def get_permalink(path: str, selection_desc: str) -> str:
     base_url = repo.get_github_url()
     line_range = parse_selection_desc(selection_desc)
     relative_path = os.path.relpath(path, os.getcwd())
-    return _assemble_permalink(base_url, branch, relative_path, line_range)
+    return f"{base_url}/blob/{branch}/{relative_path}#{line_range}"
 
 
 def parse_selection_desc(selection_desc: str) -> LineRange:
@@ -55,9 +55,3 @@ def parse_selection_desc(selection_desc: str) -> LineRange:
     anchor_line = int(anchor_pos.split(".")[0])
     cursor_line = int(cursor_pos.split(".")[0])
     return LineRange(min(anchor_line, cursor_line), max(anchor_line, cursor_line))
-
-
-def _assemble_permalink(
-    base_url: str, branch: str, path: str, line_range: LineRange
-) -> str:
-    return f"{base_url}/blob/{branch}/{path}#{line_range}"
