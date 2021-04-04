@@ -1,6 +1,5 @@
 #! python
 import os
-import typing
 
 import git
 
@@ -39,14 +38,6 @@ def main() -> None:
     permalink = get_permalink(path, selection_desc)
     clipboard_command = clipboard.get_clipboard_command()
     clipboard.write_to_clipboard(permalink, clipboard_command)
-
-
-def _parse_kak_output(kak_output: str) -> typing.Iterable[str]:
-    """Parse the output of `kcr get --value buffile --value selection_desc`
-    into path and selection_desc
-    """
-    stripped_output = kak_output.lstrip('["').rstrip('"]')
-    return stripped_output.split('","')
 
 
 def get_permalink(path: str, selection_desc: str) -> str:
