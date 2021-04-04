@@ -34,18 +34,18 @@ class LineRange(object):
 
 
 def main() -> None:
-    path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
-    permalink = get_permalink(path, selection_desc)
+    absolute_path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
+    permalink = get_permalink(absolute_path, selection_desc)
     clipboard_command = clipboard.get_clipboard_command()
     clipboard.write_to_clipboard(permalink, clipboard_command)
 
 
-def get_permalink(path: str, selection_desc: str) -> str:
+def get_permalink(absolute_path: str, selection_desc: str) -> str:
     repo = git_api.RepoApi(git.Repo("."))
     branch = repo.get_current_branch()
     base_url = repo.get_github_url()
     line_range = parse_selection_desc(selection_desc)
-    relative_path = os.path.relpath(path, os.getcwd())
+    relative_path = os.path.relpath(absolute_path, os.getcwd())
     return f"{base_url}/blob/{branch}/{relative_path}#{line_range}"
 
 
