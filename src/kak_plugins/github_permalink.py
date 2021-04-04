@@ -9,7 +9,7 @@ from .apis import kak
 
 
 class LineRange(object):
-    """Describes a range of lines"""
+    """Describes a range of lines, both in Kakoune and Github"""
 
     def __init__(self, start: int, stop: int) -> None:
         if stop < start:
@@ -34,6 +34,7 @@ class LineRange(object):
 
 
 def main() -> None:
+    """Call kcr to get editor info, then parse it and write it to the clipboard"""
     absolute_path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
     permalink = get_permalink(absolute_path, selection_desc)
     clipboard_command = clipboard.get_clipboard_command()
@@ -41,6 +42,7 @@ def main() -> None:
 
 
 def get_permalink(absolute_path: str, selection_desc: str) -> str:
+    """Create a permalink for the editor's selection"""
     repo = git_api.RepoApi(git.Repo("."))
     branch = repo.get_current_branch()
     base_url = repo.get_github_url()
