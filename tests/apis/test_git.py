@@ -1,6 +1,7 @@
 import typing
 from unittest import mock
 
+from kak_plugins import line_range
 from kak_plugins.apis import git
 
 
@@ -23,18 +24,31 @@ def test_init():
 
 def test_current_branch():
     repo = git.RepoApi(FakeRepo(active_branch="mybranch"))
-    assert repo.get_current_branch() == "mybranch"
+    assert repo.current_branch == "mybranch"
 
 
 def test_remote_ssh_url():
     repo = git.RepoApi(
         FakeRepo(remote_url="git@github.com:abstractlyZach/kak_plugins.git")
     )
-    assert repo.get_github_url() == "https://github.com/abstractlyZach/kak_plugins"
+    assert repo.github_url == "https://github.com/abstractlyZach/kak_plugins"
 
 
 def test_remote_https_url():
     repo = git.RepoApi(
         FakeRepo(remote_url="https://github.com/abstractlyZach/kak_plugins.git")
     )
-    assert repo.get_github_url() == "https://github.com/abstractlyZach/kak_plugins"
+    assert repo.github_url == "https://github.com/abstractlyZach/kak_plugins"
+
+
+def test_get_permalink():
+    repo = git.RepoApi(
+        FakeRepo(
+            remote_url="git@github.com:abstractlyZach/kak_plugins.git",
+            active_branch="newbranch",
+        )
+    )
+    expected = (
+        "https://github.com/abstractlyZach/kak_plugins/blob/newbranch/Makefile#L9"
+    )
+    assert repo.get_permalink("Makefile", line_range.LineRange(9, 9)) == expected
