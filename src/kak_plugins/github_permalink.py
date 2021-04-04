@@ -17,7 +17,7 @@ class LineRange(object):
             raise ValueError(f"Invalid range. {stop} < {start}")
         if start < 1:
             # kakoune and github start their line counts at 1
-            raise ValueError(f"Invalid range start. {start} < 0")
+            raise ValueError(f"Invalid range start. {start} < 1")
         self._start = start
         self._stop = stop
 
