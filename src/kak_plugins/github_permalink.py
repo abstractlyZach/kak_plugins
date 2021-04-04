@@ -45,7 +45,7 @@ def get_permalink(path: str, selection_desc: str) -> str:
     branch = repo.get_current_branch()
     base_url = repo.get_github_url()
     line_range = parse_selection_desc(selection_desc)
-    relative_path = _convert_to_relative_path(path)
+    relative_path = os.path.relpath(path, os.getcwd())
     return _assemble_permalink(base_url, branch, relative_path, line_range)
 
 
@@ -55,11 +55,6 @@ def parse_selection_desc(selection_desc: str) -> LineRange:
     anchor_line = int(anchor_pos.split(".")[0])
     cursor_line = int(cursor_pos.split(".")[0])
     return LineRange(min(anchor_line, cursor_line), max(anchor_line, cursor_line))
-
-
-def _convert_to_relative_path(path: str) -> str:
-    """Convert an absolute or relative path to its relative path"""
-    return os.path.relpath(path, os.getcwd())
 
 
 def _assemble_permalink(
