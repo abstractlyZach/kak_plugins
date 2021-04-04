@@ -1,12 +1,12 @@
 #! python
 import os
-import sys
 import typing
 
 import git
 
 from .apis import clipboard
 from .apis import git as git_api
+from .apis import kak
 
 
 class LineRange(object):
@@ -35,12 +35,10 @@ class LineRange(object):
 
 
 def main() -> None:
+    path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
+    permalink = get_permalink(path, selection_desc)
     clipboard_command = clipboard.get_clipboard_command()
-    # read from pipe
-    for line in sys.stdin:
-        path, selection_desc = _parse_kak_output(line)
-        permalink = get_permalink(path, selection_desc)
-        clipboard.write_to_clipboard(permalink, clipboard_command)
+    clipboard.write_to_clipboard(permalink, clipboard_command)
 
 
 def _parse_kak_output(kak_output: str) -> typing.Iterable[str]:
