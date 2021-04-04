@@ -50,6 +50,18 @@ def test_line_range_start_less_than_one():
         github_permalink.LineRange(0, 7)
 
 
+def test_line_range_equality():
+    assert github_permalink.LineRange(2, 8) == github_permalink.LineRange(2, 8)
+
+
+def test_line_range_inequality():
+    assert github_permalink.LineRange(1001, 7000) != github_permalink.LineRange(1, 2)
+
+
+def test_line_range_not_equal_other_objects():
+    assert github_permalink.LineRange(1, 2) != "abc"
+
+
 def test_parse_single_width():
     input_str = "42.18,42.18"
     line_range = github_permalink.parse_selection_desc(input_str)

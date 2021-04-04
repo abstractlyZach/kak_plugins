@@ -28,7 +28,9 @@ class LineRange(object):
             return f"L{self._start}-L{self._stop}"
 
     def __eq__(self, other: object) -> bool:
-        return self._start, self._stop == other._start, other._stop
+        if isinstance(other, LineRange):
+            return (self._start, self._stop) == (other._start, other._stop)
+        return False
 
 
 def main() -> None:
