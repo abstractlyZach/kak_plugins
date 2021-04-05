@@ -1,3 +1,5 @@
+import logging
+
 import git
 
 from .. import line_range
@@ -24,6 +26,7 @@ class RepoApi(object):
         # if we have an ssh remote, convert it to a URL
         for ssh_login in URL_REPLACEMENTS:
             if remote_url.startswith(ssh_login):
+                logging.debug(f"Remote URL starts with ssh_login: {remote_url}")
                 remote_url = remote_url.lstrip(ssh_login)
                 remote_url = URL_REPLACEMENTS[ssh_login] + remote_url
         remote_url = remote_url.rstrip(".git")
