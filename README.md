@@ -35,7 +35,8 @@ Logs are a good way of getting an idea of what's going on in the code. Logs will
 ## github-permalink
 Create a permalink to a line or range of lines in a GitHub repo that matches your current selection in Kakoune. Then copy that permalink to your clipboard program.
 1. open a file in Kakoune
+1. make a selection
 1. in normal mode, type `:$ github-permalink`
-1. you now have a permalink to your kakoune selection. should look something like this https://github.com/abstractlyZach/kak_plugins/blob/write-readme/README.md#L40
+1. you now have a permalink to your kakoune selection. it should look something like this https://github.com/abstractlyZach/kak_plugins/blob/write-readme/README.md#L40
 
 I like [binding this command](https://github.com/abstractlyZach/dotfiles/blob/master/kak/kakrc#L12) to hotkeys so I can hit 2 buttons and then paste the link into Slack or something.
