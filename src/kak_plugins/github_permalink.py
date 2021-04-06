@@ -2,7 +2,9 @@
 import logging
 import os
 import tempfile
+from typing import Optional
 
+import click
 import git
 
 from . import line_range
@@ -12,15 +14,33 @@ from .apis import kak
 
 LOGFILE_NAME = "github-permalink.log"
 
+LOG_LEVELS = {
+    "info": logging.INFO,
+    "debug": logging.DEBUG,
+    "critical": logging.CRITICAL,
+}
 
-def main() -> None:
+
+@click.command()
+@click.option(
+    "-l",
+    "--log-level",
+    default="critical",
+    help="Level of information to write to the logs.",
+    type=click.Choice(LOG_LEVELS),
+)
+@click.option("-p", "--log-path", help="Where to write the logfile.")
+def main(log_level: str, log_path: Optional[str]) -> None:
     """Call kcr to get editor info, then parse it and write it to the clipboard"""
-    tempdir = tempfile.gettempdir()
+    if log_path is None:
+        temp_dir = tempfile.gettempdir()
+        log_path = f"{temp_dir}/{LOGFILE_NAME}"
     logging.basicConfig(
-        filename=tempdir + "/" + LOGFILE_NAME,
-        format="%(levelname)s:%(message)s",
-        level=logging.DEBUG,
+        filename=log_path,
+        format="%(levelname)s: %(message)s",
+        level=LOG_LEVELS[log_level],
     )
+    logging.info(f"log level set to {log_level.upper()}")
     absolute_path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
     repo = git_api.RepoApi(git.Repo("."))
     relative_path = os.path.relpath(absolute_path, os.getcwd())
@@ -28,6 +48,7 @@ def main() -> None:
     permalink = repo.get_permalink(relative_path, line_range)
     clipboard_command = clipboard.get_clipboard_command()
     clipboard.write_to_clipboard(permalink, clipboard_command)
+    logging.info("=== script complete ===")
 
 
 def parse_selection_desc(selection_desc: str) -> line_range.LineRange:
