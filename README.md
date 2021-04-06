@@ -7,7 +7,7 @@
 Zach's plugins for the [Kakoune](http://kakoune.org/) text editor.
 
 ## Installation
-I recommend using [pipx](https://pipxproject.github.io/pipx/installation/) for installation. It allows you to install python packages on your machine in separate virtual environments without having to manage the virtual environments yourself. Feel free to use `pip` if you prefer that.
+I recommend using [pipx](https://pipxproject.github.io/pipx/installation/) for installation. It allows you to install python packages on your machine in separate virtual environments without having to manage the virtual environments yourself. `pip` also works if you prefer that.
 ```
 pipx install kak_plugins
 ```
@@ -21,7 +21,7 @@ pipx install kak_plugins
     * [xclip](https://github.com/astrand/xclip) for Linux
     * [wl-clipboard](https://github.com/bugaevc/wl-clipboard) for Wayland (if you don't know what this is and you use Linux, you'll probably use `xclip`)
 ## Setup
-There are some environment varibles you will need to define in order to use these plugins. You would probably define these in your `~/.bashrc`, `zshrc`, or `~/.profile`. I define mine (here)[https://github.com/abstractlyZach/dotfiles/blob/master/common/.profile].
+There are some environment varibles you will need to define in order to use these plugins. You would probably define these in your `~/.bashrc`, `zshrc`, or `~/.profile`. I define mine [here](https://github.com/abstractlyZach/dotfiles/blob/master/common/.profile]
 ```
 # program that reads stdin and writes to your system clipboard
 export CLIPBOARD="pbcopy"
