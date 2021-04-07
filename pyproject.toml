@@ -12,6 +12,7 @@ keywords = ["kakoune", "plugin"]
 [tool.poetry.dependencies]
 python = "^3.9"
 GitPython = "^3.1.14"
+click = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
