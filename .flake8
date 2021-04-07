@@ -6,6 +6,6 @@ max-complexity = 10
 max-line-length = 90
 # local imports
 application-import-names = kak_plugins,tests
-import-order-style = google
+import-order-style = pep8
 # allow asserts in tests
 per-file-ignores = tests/*:S101,ANN
