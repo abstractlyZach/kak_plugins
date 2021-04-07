@@ -28,24 +28,43 @@ LOG_LEVELS = {
     default="info",
     help="Level of information to write to the logs.",
     type=click.Choice(LOG_LEVELS),
+    show_default=True,
+)
+@click.option(
+    "-w",
+    "--write-to-logfile",
+    is_flag=True,
+    help="If this flag is on, write to a logfile instead.",
 )
 @click.option("-p", "--log-path", help="Where to write the logfile.")
-def main(log_level: str, log_path: Optional[str]) -> None:
+def main(log_level: str, write_to_logfile: bool, log_path: Optional[str]) -> None:
     """Call kcr to get editor info, then parse it and write it to the clipboard"""
-    _setup_logging(log_level, log_path)
+    if log_path:
+        # if a user specifies a log path, we can assume they want to log
+        write_to_logfile = True
+    _setup_logging(log_level, write_to_logfile, log_path)
     get_github_permalink()
     logging.info("=== script complete ===")
 
 
-def _setup_logging(log_level: str, log_path: Optional[str]) -> None:  # pragma: no cover
-    if log_path is None:
-        temp_dir = tempfile.gettempdir()
-        log_path = f"{temp_dir}/{DEFAULT_LOGFILE}"
-    logging.basicConfig(
-        filename=log_path,
-        format="%(levelname)s: %(message)s",
-        level=LOG_LEVELS[log_level],
-    )
+def _setup_logging(
+    log_level: str, write_to_logfile: bool, log_path: Optional[str]
+) -> None:  # pragma: no cover
+    if write_to_logfile:
+        if log_path is None:
+            temp_dir = tempfile.gettempdir()
+            log_path = f"{temp_dir}/{DEFAULT_LOGFILE}"
+        logging.basicConfig(
+            filename=log_path,
+            format="%(levelname)s: %(message)s",
+            level=LOG_LEVELS[log_level],
+        )
+    else:
+        # write to stderr
+        logging.basicConfig(
+            format="%(levelname)s: %(message)s",
+            level=LOG_LEVELS[log_level],
+        )
     logging.info(f"log level set to {log_level.upper()}")
 
 
