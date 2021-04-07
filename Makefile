@@ -1,3 +1,5 @@
+all: format test lint typecheck
+
 test:
 	poetry run pytest --cov
 
