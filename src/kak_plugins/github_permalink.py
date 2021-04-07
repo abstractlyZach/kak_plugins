@@ -12,7 +12,7 @@ from .apis import clipboard
 from .apis import git as git_api
 from .apis import kak
 
-LOGFILE_NAME = "github-permalink.log"
+DEFAULT_LOGFILE = "github-permalink.log"
 
 LOG_LEVELS = {
     "info": logging.INFO,
@@ -32,15 +32,24 @@ LOG_LEVELS = {
 @click.option("-p", "--log-path", help="Where to write the logfile.")
 def main(log_level: str, log_path: Optional[str]) -> None:
     """Call kcr to get editor info, then parse it and write it to the clipboard"""
+    _setup_logging(log_level, log_path)
+    get_github_permalink()
+    logging.info("=== script complete ===")
+
+
+def _setup_logging(log_level: str, log_path: Optional[str]) -> None:  # pragma: no cover
     if log_path is None:
         temp_dir = tempfile.gettempdir()
-        log_path = f"{temp_dir}/{LOGFILE_NAME}"
+        log_path = f"{temp_dir}/{DEFAULT_LOGFILE}"
     logging.basicConfig(
         filename=log_path,
         format="%(levelname)s: %(message)s",
         level=LOG_LEVELS[log_level],
     )
     logging.info(f"log level set to {log_level.upper()}")
+
+
+def get_github_permalink() -> None:
     absolute_path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
     repo = git_api.RepoApi(git.Repo("."))
     relative_path = os.path.relpath(absolute_path, os.getcwd())
@@ -48,7 +57,6 @@ def main(log_level: str, log_path: Optional[str]) -> None:
     permalink = repo.get_permalink(relative_path, line_range)
     clipboard_command = clipboard.get_clipboard_command()
     clipboard.write_to_clipboard(permalink, clipboard_command)
-    logging.info("=== script complete ===")
 
 
 def parse_selection_desc(selection_desc: str) -> line_range.LineRange:
