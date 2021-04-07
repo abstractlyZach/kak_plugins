@@ -13,6 +13,7 @@ pipx install kak_plugins
 ```
 
 ## Dependencies
+* [Kakoune](http://kakoune.org/) of course
 * [kakoune.cr](https://github.com/alexherbo2/kakoune.cr)
     * enables us to retrieve info from Kakoune
     * provides an interface to control Kakoune
