@@ -7,6 +7,7 @@ from typing import Optional
 import click
 import git
 
+from . import os as kak_plugins_os
 from .apis import clipboard
 from .apis import git as git_api
 from .apis import kak
@@ -51,8 +52,9 @@ def _setup_logging(log_level: str, log_path: Optional[str]) -> None:  # pragma: 
 def get_github_permalink() -> None:
     absolute_path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
     selection = kak.SelectionDescription(selection_desc)
-    repo = git_api.RepoApi(git.Repo("."))
-    relative_path = os.path.relpath(absolute_path, os.getcwd())
+    git_root = kak_plugins_os.get_git_root(os.path.exists, absolute_path)
+    repo = git_api.RepoApi(git.Repo(git_root))
+    relative_path = os.path.relpath(absolute_path, git_root)
     permalink = repo.get_permalink(relative_path, selection.range)
     clipboard_command = clipboard.get_clipboard_command()
     clipboard.write_to_clipboard(permalink, clipboard_command)
