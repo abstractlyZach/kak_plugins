@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kak_plugins"
-version = "0.3.2"
+version = "0.4.0"
 description = ""
 authors = ["abstractlyZach <zach3lee@gmail.com>"]
 license = "MIT"
