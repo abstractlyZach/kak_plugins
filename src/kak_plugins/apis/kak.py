@@ -1,19 +1,18 @@
 import json
 import logging
-import subprocess
+from collections.abc import Callable
 from typing import List
 
 from .. import line_range
 
 
-def kcr_get(values: List) -> List:
-    # TODO: how do we test this???
+def kcr_get(runner: Callable, values: List) -> List:
     kcr_command = ["kcr", "get"]
     for value in values:
         kcr_command.append("--value")
         kcr_command.append(value)
     logging.debug(f"running commmand: '{kcr_command}'")
-    result = subprocess.run(kcr_command, capture_output=True, check=True)  # noqa: S603
+    result = runner(kcr_command, capture_output=True, check=True)
     kcr_output = str(result.stdout, encoding="utf-8").strip()
     logging.debug(f"kcr output: {kcr_output}")
     return json.loads(kcr_output)
