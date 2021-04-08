@@ -38,8 +38,11 @@ LOG_LEVELS = {
     help="If this flag is on, write to a logfile instead.",
 )
 @click.option("-p", "--log-path", help="Where to write the logfile.")
-def main(log_level: str, write_to_logfile: bool, log_path: Optional[str]) -> None:
+def main(
+    log_level: str, write_to_logfile: bool, log_path: Optional[str]
+) -> None:  # pragma: no cover
     """Call kcr to get editor info, then parse it and write it to the clipboard"""
+    # TODO: write click tests. maybe need to use a mock?
     if log_path:
         # if a user specifies a log path, we can assume they want to log
         write_to_logfile = True
@@ -69,7 +72,8 @@ def _setup_logging(
     logging.info(f"log level set to {log_level.upper()}")
 
 
-def get_github_permalink() -> None:
+def get_github_permalink() -> None:  # pragma: no cover
+    # TODO: break this file up and stop ignoring coverage
     absolute_path, selection_desc = kak.kcr_get(
         subprocess.run, ["buffile", "selection_desc"]
     )
