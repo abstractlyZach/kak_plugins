@@ -24,6 +24,13 @@ LOG_LEVELS = {
 
 @click.command()
 @click.option(
+    "-c",
+    "--clipboard-command",
+    envvar="CLIPBOARD",
+    help="Program that is used to write to the system clipboard. "
+    + "CLIPBOARD will be read from the environment if this flag is not specified.",
+)
+@click.option(
     "-l",
     "--log-level",
     default="info",
@@ -39,15 +46,20 @@ LOG_LEVELS = {
 )
 @click.option("-p", "--log-path", help="Where to write the logfile.")
 def main(
-    log_level: str, write_to_logfile: bool, log_path: Optional[str]
+    log_level: str,
+    write_to_logfile: bool,
+    log_path: Optional[str],
+    clipboard_command: Optional[str],
 ) -> None:  # pragma: no cover
     """Call kcr to get editor info, then parse it and write it to the clipboard"""
     # TODO: write click tests. maybe need to use a mock?
+    if not clipboard_command:
+        raise RuntimeError("CLIPBOARD is not set")
     if log_path:
         # if a user specifies a log path, we can assume they want to log
         write_to_logfile = True
     _setup_logging(log_level, write_to_logfile, log_path)
-    get_github_permalink()
+    get_github_permalink(clipboard_command)
     logging.info("=== script complete ===")
 
 
@@ -72,7 +84,7 @@ def _setup_logging(
     logging.info(f"log level set to {log_level.upper()}")
 
 
-def get_github_permalink() -> None:  # pragma: no cover
+def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
     # TODO: break this file up and stop ignoring coverage
     absolute_path, selection_desc = kak.kcr_get(
         subprocess.run, ["buffile", "selection_desc"]
@@ -82,6 +94,5 @@ def get_github_permalink() -> None:  # pragma: no cover
     repo = git_api.RepoApi(git.Repo(git_root))
     relative_path = os.path.relpath(absolute_path, git_root)
     permalink = repo.get_permalink(relative_path, selection.range)
-    clipboard_command = clipboard.get_clipboard_command()
     clipboard_job = clipboard.ClipboardJob(clipboard_command, permalink)
     clipboard.write_to_clipboard(subprocess.run, clipboard_job)
