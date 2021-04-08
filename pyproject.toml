@@ -46,7 +46,7 @@ source = ["kak_plugins"]
 [tool.coverage.report]
 show_missing = true
 fail_under = 82
-omit = ["src/kak_plugins/apis/clipboard.py", "src/kak_plugins/apis/kak.py"]
+omit = ["src/kak_plugins/apis/kak.py"]
 
 [tool.pytest.ini_options]
 markers = [

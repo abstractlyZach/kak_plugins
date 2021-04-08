@@ -1,6 +1,7 @@
 #! python
 import logging
 import os
+import subprocess
 import tempfile
 from typing import Optional
 
@@ -76,4 +77,5 @@ def get_github_permalink() -> None:
     relative_path = os.path.relpath(absolute_path, git_root)
     permalink = repo.get_permalink(relative_path, selection.range)
     clipboard_command = clipboard.get_clipboard_command()
-    clipboard.write_to_clipboard(permalink, clipboard_command)
+    clipboard_job = clipboard.ClipboardJob(clipboard_command, permalink)
+    clipboard.write_to_clipboard(subprocess.run, clipboard_job)
