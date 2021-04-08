@@ -15,7 +15,7 @@ GitPython = "^3.1.14"
 click = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^6.2.3"
 mypy = "^0.812"
 reorder-python-imports = "^2.4.0"
 coverage = {extras = ["toml"], version = "^5.5"}
@@ -47,3 +47,9 @@ source = ["kak_plugins"]
 show_missing = true
 fail_under = 82
 omit = ["src/kak_plugins/apis/clipboard.py", "src/kak_plugins/apis/kak.py"]
+
+[tool.pytest.ini_options]
+markers = [
+    """os: tests that interact with the real OS and may have different behaviors \
+    on different systems""",
+]

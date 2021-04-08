@@ -1,6 +1,6 @@
 import logging
 import os
-import pipes
+import subprocess
 
 # TODO: how do I test this file??
 
@@ -15,9 +15,5 @@ def get_clipboard_command() -> str:
 
 def write_to_clipboard(message: str, clipboard_command: str) -> None:
     logging.debug(f"Clipboard is {clipboard_command}")
-    template = pipes.Template()
-    # takes in input and writes no output
-    template.append(clipboard_command, "-.")
-    with template.open("tempfile", "w") as clipboard:  # won't actually open a file
-        clipboard.write(message)
+    subprocess.run(clipboard_command, input=message, text=True)  # noqa: S603
     logging.debug(f"writing '{message}' to clipboard")
