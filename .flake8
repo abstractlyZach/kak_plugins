@@ -1,6 +1,6 @@
 [flake8]
 select = ANN,B,B9,BLK,C,E,F,W,I,S
-ignore = E203,E501,W503,ANN101
+ignore = E203,E501,W503,ANN101,S404
 # mccabe complexity checker
 max-complexity = 10
 max-line-length = 90

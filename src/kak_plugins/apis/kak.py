@@ -1,6 +1,6 @@
 import json
 import logging
-import pipes
+import subprocess
 from typing import List
 
 from .. import line_range
@@ -8,14 +8,13 @@ from .. import line_range
 
 def kcr_get(values: List) -> List:
     # TODO: how do we test this???
-    value_flags = [f"--value {value}" for value in values]
-    args = " ".join(value_flags)
-    command = f"kcr get {args}"
-    logging.debug(f"running commmand: '{command}'")
-    template = pipes.Template()
-    template.prepend(command, ".-")
-    with template.open("tempfile", "r") as pipe_outfile:
-        kcr_output = pipe_outfile.read()
+    kcr_command = ["kcr", "get"]
+    for value in values:
+        kcr_command.append("--value")
+        kcr_command.append(value)
+    logging.debug(f"running commmand: '{kcr_command}'")
+    result = subprocess.run(kcr_command, capture_output=True, check=True)  # noqa: S603
+    kcr_output = str(result.stdout, encoding="utf-8").strip()
     logging.debug(f"kcr output: {kcr_output}")
     return json.loads(kcr_output)
 
