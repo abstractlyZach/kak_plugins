@@ -8,4 +8,6 @@ max-line-length = 90
 application-import-names = kak_plugins,tests
 import-order-style = pep8
 # allow asserts in tests
-per-file-ignores = tests/*:S101,ANN
+per-file-ignores =
+    tests/learning/test_subprocess.py:S,ANN
+    tests/*:S101,ANN
