@@ -1,6 +1,7 @@
 #! python
 import logging
 import os
+import subprocess
 import tempfile
 from typing import Optional
 
@@ -69,7 +70,9 @@ def _setup_logging(
 
 
 def get_github_permalink() -> None:
-    absolute_path, selection_desc = kak.kcr_get(["buffile", "selection_desc"])
+    absolute_path, selection_desc = kak.kcr_get(
+        subprocess.run, ["buffile", "selection_desc"]
+    )
     selection = kak.SelectionDescription(selection_desc)
     git_root = kak_plugins_os.get_git_root(os.path.exists, absolute_path)
     repo = git_api.RepoApi(git.Repo(git_root))
