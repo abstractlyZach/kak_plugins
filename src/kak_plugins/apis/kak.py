@@ -7,10 +7,20 @@ from .. import line_range
 
 
 class KakouneCR(object):
+    """Handles all calls to kakoune.cr"""
+
     def __init__(self, runner: Callable) -> None:
+        """Stores a Callable that has the interface of subprocess.run()"""
         self._runner = runner
 
-    def get(self, values: List) -> List:
+    def get(self, values: List[str]) -> List:
+        """Query kakoune for information about itself
+
+        This link contains the possible values to query
+        https://github.com/mawww/kakoune/blob/master/doc/pages/expansions.asciidoc#value-expansions
+
+        For more info on the command: https://github.com/alexherbo2/kakoune.cr#get
+        """
         kcr_command = ["kcr", "get"]
         for value in values:
             kcr_command.append("--value")
