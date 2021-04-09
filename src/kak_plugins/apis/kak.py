@@ -10,7 +10,7 @@ class KakouneCR(object):
     def __init__(self, runner: Callable) -> None:
         self._runner = runner
 
-    def kcr_get(self, values: List) -> List:
+    def get(self, values: List) -> List:
         kcr_command = ["kcr", "get"]
         for value in values:
             kcr_command.append("--value")

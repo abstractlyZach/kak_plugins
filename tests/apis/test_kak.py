@@ -51,32 +51,31 @@ def test_parse_backwards_selection():
     assert selection.range == line_range.LineRange(29, 50)
 
 
-def test_kcr_get_correct_call():
+def test_kcr_get_makes_correct_call():
     runner_spy = mock.MagicMock()
     runner_spy.return_value.stdout = b"[]"
     runner_spy.return_value.returncode = 0
     kcr = kak.KakouneCR(runner_spy)
-    kcr.kcr_get(["a", "b", "c"])
+    kcr.get(["a", "b", "c"])
     runner_spy.assert_called_once_with(
         ["kcr", "get", "--value", "a", "--value", "b", "--value", "c"],
         capture_output=True,
     )
 
 
-def test_kcr_get_gets_processed_correctly():
+def test_get_success():
     def runner_stub(*args, **kwargs):
         return RunSuccessStub(b'["buffile", "18.1,22.7"]\n')
 
     kcr = kak.KakouneCR(runner_stub)
-    result = kcr.kcr_get(["a", "b", "c"])
+    result = kcr.get(["a", "b", "c"])
     assert result == ["buffile", "18.1,22.7"]
 
 
-def test_kcr_get_handles_error():
+def test_get_handles_error():
     def runner_stub(*args, **kwargs):
         return RunFailureStub(b"Something has gone wrong\n")
 
     kcr = kak.KakouneCR(runner_stub)
-
     with pytest.raises(RuntimeError):
-        kcr.kcr_get(["a", "b", "c"])
+        kcr.get(["a", "b", "c"])
