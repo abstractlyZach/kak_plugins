@@ -51,6 +51,12 @@ def test_parse_backwards_selection():
     assert selection.range == line_range.LineRange(29, 50)
 
 
+def test_selection_desc_str():
+    input_str = "55.55,66.66"
+    selection = kak.SelectionDescription(input_str)
+    assert str(selection) == "L55-L66"
+
+
 def test_kcr_get_makes_correct_call():
     runner_spy = mock.MagicMock()
     runner_spy.return_value.stdout = b"[]"

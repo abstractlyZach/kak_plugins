@@ -50,3 +50,6 @@ class SelectionDescription(object):
     @property
     def range(self) -> line_range.LineRange:
         return self._line_range
+
+    def __str__(self) -> str:
+        return str(self._line_range)
