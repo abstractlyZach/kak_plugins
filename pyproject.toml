@@ -28,6 +28,7 @@ flake8-bandit = "^2.1.2"
 flake8-annotations = "^2.6.2"
 codecov = "^2.1.11"
 isort = "^5.8.0"
+pytest-mock = "^3.5.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
