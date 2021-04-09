@@ -2,6 +2,7 @@
 import logging
 import os
 import subprocess
+import sys
 from typing import Optional
 
 import click
@@ -46,6 +47,8 @@ def main(
     # TODO: write click tests. maybe need to use a mock?
     if not clipboard_command:
         raise RuntimeError("CLIPBOARD is not set")
+    # print this many levels of the traceback when errors occur
+    sys.tracebacklimit = verbosity_level
     logging.basicConfig(
         format="%(levelname)s: %(message)s",
         level=VERBOSITY_LOG_LEVELS[verbosity_level],

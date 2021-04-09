@@ -15,7 +15,7 @@ def kcr_get(runner: Callable, values: List) -> List:
     result = runner(kcr_command, capture_output=True)
     if result.returncode != 0:
         error_message = str(result.stderr, encoding="utf-8").strip()
-        raise RuntimeError(error_message)
+        raise RuntimeError(f"kakoune.cr: {error_message}")
     else:
         kcr_output = str(result.stdout, encoding="utf-8").strip()
         logging.debug(f"kcr output: {kcr_output}")
