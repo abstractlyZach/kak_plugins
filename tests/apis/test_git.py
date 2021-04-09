@@ -1,8 +1,8 @@
 import typing
 from unittest import mock
 
-from kak_plugins import line_range
 from kak_plugins.apis import git
+from tests import fakes
 
 
 class FakeRepo(object):
@@ -48,7 +48,8 @@ def test_get_permalink():
             active_branch="newbranch",
         )
     )
+    kak_state = fakes.FakeKakState(selection=fakes.FakeSelectionDescription("L9"))
     expected = (
         "https://github.com/abstractlyZach/kak_plugins/blob/newbranch/Makefile#L9"
     )
-    assert repo.get_permalink("Makefile", line_range.LineRange(9, 9)) == expected
+    assert repo.get_permalink("Makefile", kak_state) == expected
