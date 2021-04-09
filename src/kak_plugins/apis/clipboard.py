@@ -13,7 +13,7 @@ def write_to_clipboard(runner: Callable, job: ClipboardJob) -> None:
         - runner: a callable like subprocess.run that will make a system call
         - job: the unit of work to perform
     """
-    logging.debug(f"writing '{job.message}' to {job.clipboard_command}")
+    logging.info(f"writing '{job.message}' to {job.clipboard_command}")
     runner(
         job.clipboard_command, input=job.message, text=True, check=True
     )  # noqa: S603
