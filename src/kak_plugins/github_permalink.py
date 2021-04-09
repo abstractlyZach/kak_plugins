@@ -15,10 +15,11 @@ from .apis import kak
 
 DEFAULT_LOGFILE = "github-permalink.log"
 
-LOG_LEVELS = {
-    "info": logging.INFO,
-    "debug": logging.DEBUG,
-    "critical": logging.CRITICAL,
+# maps from verbosity level to log levels
+VERBOSITY_LOG_LEVELS = {
+    0: logging.WARNING,
+    1: logging.INFO,
+    2: logging.DEBUG,
 }
 
 
@@ -31,12 +32,13 @@ LOG_LEVELS = {
     + "CLIPBOARD will be read from the environment if this flag is not specified.",
 )
 @click.option(
-    "-l",
-    "--log-level",
-    default="info",
-    help="Level of information to write to the logs.",
-    type=click.Choice(LOG_LEVELS),
-    show_default=True,
+    "-v",
+    "--verbose",
+    "verbosity_level",
+    default=0,
+    count=True,
+    help="Set verbosity. Add more v's to increase verbosity. For example, -v is "
+    + "verbosity level 1 and -vv is verbosity level 2",
 )
 @click.option(
     "-w",
@@ -46,7 +48,7 @@ LOG_LEVELS = {
 )
 @click.option("-p", "--log-path", help="Where to write the logfile.")
 def main(
-    log_level: str,
+    verbosity_level: int,
     write_to_logfile: bool,
     log_path: Optional[str],
     clipboard_command: Optional[str],
@@ -58,14 +60,15 @@ def main(
     if log_path:
         # if a user specifies a log path, we can assume they want to log
         write_to_logfile = True
-    _setup_logging(log_level, write_to_logfile, log_path)
+    _setup_logging(verbosity_level, write_to_logfile, log_path)
     get_github_permalink(clipboard_command)
     logging.info("=== script complete ===")
 
 
 def _setup_logging(
-    log_level: str, write_to_logfile: bool, log_path: Optional[str]
+    verbosity_level: int, write_to_logfile: bool, log_path: Optional[str]
 ) -> None:  # pragma: no cover
+    log_level = VERBOSITY_LOG_LEVELS[verbosity_level]
     if write_to_logfile:
         if log_path is None:
             temp_dir = tempfile.gettempdir()
@@ -73,15 +76,15 @@ def _setup_logging(
         logging.basicConfig(
             filename=log_path,
             format="%(levelname)s: %(message)s",
-            level=LOG_LEVELS[log_level],
+            level=log_level,
         )
     else:
         # write to stderr
         logging.basicConfig(
             format="%(levelname)s: %(message)s",
-            level=LOG_LEVELS[log_level],
+            level=log_level,
         )
-    logging.info(f"log level set to {log_level.upper()}")
+    logging.info(f"log level set to {log_level}")
 
 
 def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
