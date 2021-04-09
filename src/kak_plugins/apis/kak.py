@@ -53,3 +53,33 @@ class SelectionDescription(object):
 
     def __str__(self) -> str:
         return str(self._line_range)
+
+
+class KakouneState(object):
+    """A representation of Kakoune's state
+
+    Takes information from kcr and turns it into internal representations
+    that should be easier to work with than pure strings
+    """
+
+    def __init__(self, kcr: KakouneCR) -> None:
+        """Use kcr to query and parse the editor's state"""
+        self._state = dict()
+        parsers = {"buffile": None, "selection_desc": SelectionDescription}
+        kak_states = kcr.get(parsers)
+        for state, state_name, parser in zip(
+            kak_states, parsers.keys(), parsers.values()
+        ):
+            if parser is not None:
+                self._state[state_name] = parser(state)
+            else:
+                self._state[state_name] = state
+
+    # there's gotta be a better way than defining a property for each one, right?
+    @property
+    def buffile(self) -> str:
+        return self._state["buffile"]
+
+    @property
+    def selection(self) -> SelectionDescription:
+        return self._state["selection_desc"]

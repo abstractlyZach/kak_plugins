@@ -85,3 +85,18 @@ def test_get_handles_error():
     kcr = kak.KakouneCR(runner_stub)
     with pytest.raises(RuntimeError):
         kcr.get(["a", "b", "c"])
+
+
+class FakeKcr(object):
+    def __init__(self, get=""):
+        self._get = get
+
+    def get(self, values):
+        return self._get
+
+
+def test_kak_state():
+    kcr = FakeKcr(get=["/home/kakuser/abc.txt", "101.1,377.9"])
+    state = kak.KakouneState(kcr)
+    assert state.buffile == "/home/kakuser/abc.txt"
+    assert state.selection.range == line_range.LineRange(101, 377)
