@@ -30,13 +30,13 @@ There are some environment varibles you will need to define in order to use thes
 export CLIPBOARD="pbcopy"
 ```
 
-## Logging
-Logs are a good way of getting an idea of what's going on in the code. Logs will be written to stderr by default, but if you turn on logging and don't specify a path, then logs will be written in a temporary directory in a file that has the name of the plugin. See here for rules on [where you can find logs on your system](https://docs.python.org/3/library/tempfile.html#tempfile.gettempdir)
-
 # Plugins
 
 ## github-permalink
 Create a permalink to a line or range of lines in a GitHub repo that matches your current selection in Kakoune. Then copy that permalink to your clipboard program.
+```
+github-permalink --help
+```
 
 ### in kak
 This method is great for using in your everyday editing
