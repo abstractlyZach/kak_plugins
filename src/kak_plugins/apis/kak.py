@@ -12,10 +12,14 @@ def kcr_get(runner: Callable, values: List) -> List:
         kcr_command.append("--value")
         kcr_command.append(value)
     logging.debug(f"running commmand: '{kcr_command}'")
-    result = runner(kcr_command, capture_output=True, check=True)
-    kcr_output = str(result.stdout, encoding="utf-8").strip()
-    logging.debug(f"kcr output: {kcr_output}")
-    return json.loads(kcr_output)
+    result = runner(kcr_command, capture_output=True)
+    if result.returncode != 0:
+        error_message = str(result.stderr, encoding="utf-8").strip()
+        raise RuntimeError(f"kakoune.cr: {error_message}")
+    else:
+        kcr_output = str(result.stdout, encoding="utf-8").strip()
+        logging.debug(f"kcr output: {kcr_output}")
+        return json.loads(kcr_output)
 
 
 class SelectionDescription(object):
