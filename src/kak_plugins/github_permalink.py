@@ -40,11 +40,8 @@ VERBOSITY_LOG_LEVELS = {
     help="Set verbosity. Add more v's to increase verbosity. For example, -v is "
     + "verbosity level 1 and -vv is verbosity level 2",
 )
-def main(
-    verbosity_level: int, clipboard_command: Optional[str]
-) -> None:  # pragma: no cover
+def main(verbosity_level: int, clipboard_command: Optional[str]) -> None:
     """Call kcr to get editor info, then parse it and write it to the clipboard"""
-    # TODO: write click tests. maybe need to use a mock?
     if not clipboard_command:
         raise RuntimeError("CLIPBOARD is not set")
     # print this many levels of the traceback when errors occur
