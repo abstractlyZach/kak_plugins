@@ -46,18 +46,12 @@ def main(
     # TODO: write click tests. maybe need to use a mock?
     if not clipboard_command:
         raise RuntimeError("CLIPBOARD is not set")
-    _setup_logging(verbosity_level)
-    get_github_permalink(clipboard_command)
-    logging.info("=== script complete ===")
-
-
-def _setup_logging(verbosity_level: int) -> None:  # pragma: no cover
-    log_level = VERBOSITY_LOG_LEVELS[verbosity_level]
-    # writes to stderr
     logging.basicConfig(
         format="%(levelname)s: %(message)s",
-        level=log_level,
+        level=VERBOSITY_LOG_LEVELS[verbosity_level],
     )
+    get_github_permalink(clipboard_command)
+    logging.info("=== script complete ===")
 
 
 def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
