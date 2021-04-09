@@ -2,7 +2,6 @@
 import logging
 import os
 import subprocess
-import tempfile
 from typing import Optional
 
 import click
@@ -40,51 +39,25 @@ VERBOSITY_LOG_LEVELS = {
     help="Set verbosity. Add more v's to increase verbosity. For example, -v is "
     + "verbosity level 1 and -vv is verbosity level 2",
 )
-@click.option(
-    "-w",
-    "--write-to-logfile",
-    is_flag=True,
-    help="If this flag is on, write to a logfile instead.",
-)
-@click.option("-p", "--log-path", help="Where to write the logfile.")
 def main(
-    verbosity_level: int,
-    write_to_logfile: bool,
-    log_path: Optional[str],
-    clipboard_command: Optional[str],
+    verbosity_level: int, clipboard_command: Optional[str]
 ) -> None:  # pragma: no cover
     """Call kcr to get editor info, then parse it and write it to the clipboard"""
     # TODO: write click tests. maybe need to use a mock?
     if not clipboard_command:
         raise RuntimeError("CLIPBOARD is not set")
-    if log_path:
-        # if a user specifies a log path, we can assume they want to log
-        write_to_logfile = True
-    _setup_logging(verbosity_level, write_to_logfile, log_path)
+    _setup_logging(verbosity_level)
     get_github_permalink(clipboard_command)
     logging.info("=== script complete ===")
 
 
-def _setup_logging(
-    verbosity_level: int, write_to_logfile: bool, log_path: Optional[str]
-) -> None:  # pragma: no cover
+def _setup_logging(verbosity_level: int) -> None:  # pragma: no cover
     log_level = VERBOSITY_LOG_LEVELS[verbosity_level]
-    if write_to_logfile:
-        if log_path is None:
-            temp_dir = tempfile.gettempdir()
-            log_path = f"{temp_dir}/{DEFAULT_LOGFILE}"
-        logging.basicConfig(
-            filename=log_path,
-            format="%(levelname)s: %(message)s",
-            level=log_level,
-        )
-    else:
-        # write to stderr
-        logging.basicConfig(
-            format="%(levelname)s: %(message)s",
-            level=log_level,
-        )
-    logging.info(f"log level set to {log_level}")
+    # writes to stderr
+    logging.basicConfig(
+        format="%(levelname)s: %(message)s",
+        level=log_level,
+    )
 
 
 def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
