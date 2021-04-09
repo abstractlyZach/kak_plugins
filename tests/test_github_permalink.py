@@ -17,7 +17,8 @@ def mock_get_github_permalink(mocker):
     return mocker.patch("kak_plugins.github_permalink.get_github_permalink")
 
 
-def test_main_exits_zero(runner, mock_get_github_permalink):
+def test_main_exits_zero(runner, mock_get_github_permalink, mocker):
+    mocker.patch.dict(os.environ, {"CLIPBOARD": "xclip"})
     result = runner.invoke(github_permalink.main)
     assert result.exit_code == 0
 
