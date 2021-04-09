@@ -1,7 +1,7 @@
 from collections.abc import Callable
 import json
 import logging
-from typing import List
+from typing import List, NamedTuple, Optional
 
 from .. import line_range
 
@@ -55,31 +55,56 @@ class SelectionDescription(object):
         return str(self._line_range)
 
 
-class KakouneState(object):
-    """A representation of Kakoune's state
+class KakouneState(NamedTuple):
+    """Internal representation of Kakoune's state
 
-    Takes information from kcr and turns it into internal representations
-    that should be easier to work with than pure strings
+    This is a canonical list of everything we care about. I'll need to explore
+    other options if this ever becomes too big of a list. However, there doesn't
+    seem to be any huge overhead from getting multiple values from kcr
     """
 
-    def __init__(self, kcr: KakouneCR) -> None:
-        """Use kcr to query and parse the editor's state"""
-        self._state = dict()
-        parsers = {"buffile": None, "selection_desc": SelectionDescription}
-        kak_states = kcr.get(parsers)
-        for state, state_name, parser in zip(
-            kak_states, parsers.keys(), parsers.values()
-        ):
-            if parser is not None:
-                self._state[state_name] = parser(state)
-            else:
-                self._state[state_name] = state
+    buffer_path: str
+    selection: SelectionDescription
 
-    # there's gotta be a better way than defining a property for each one, right?
-    @property
-    def buffile(self) -> str:
-        return self._state["buffile"]
 
-    @property
-    def selection(self) -> SelectionDescription:
-        return self._state["selection_desc"]
+class KakouneExpansion(NamedTuple):
+    """Information from Kakoune that we can query
+
+    https://github.com/mawww/kakoune/blob/master/doc/pages/expansions.asciidoc
+    """
+
+    # kakoune's name for the expansion
+    expansion_name: str
+    # converts the expansion if it can be turned into something more useful than a string
+    parser: Optional[Callable]
+    # our internal name for the state
+    state_name: str
+    # TODO: add type if we want to query expansions that aren't values in the future
+
+
+EXPANSIONS = [
+    KakouneExpansion(expansion_name="buffile", parser=None, state_name="buffer_path"),
+    KakouneExpansion(
+        expansion_name="selection_desc",
+        parser=SelectionDescription,
+        state_name="selection",
+    ),
+]
+
+
+def get_state(kcr: KakouneCR) -> KakouneState:
+    """Call kcr to get the current state of Kakoune.
+
+    Requests all expansions in EXPANSIONS and parses them to get nice
+    python objects.
+    """
+    expansion_values = kcr.get([expansion.expansion_name for expansion in EXPANSIONS])
+    parsed_values = dict()
+    for expansion_definition, value in zip(EXPANSIONS, expansion_values):
+        state_name = expansion_definition.state_name
+        if expansion_definition.parser is None:
+            parsed_values[state_name] = value
+        else:
+            parsed_values[state_name] = expansion_definition.parser(value)
+        logging.debug(f'{state_name} is "{parsed_values[state_name]}"')
+    return KakouneState(**parsed_values)
