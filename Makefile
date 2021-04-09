@@ -6,8 +6,7 @@ test:
 format:
 	# reformat all files
 	poetry run black .
-	fd --extension py \
-	| xargs poetry run reorder-python-imports --exit-zero-even-if-changed --application-directories=.:src
+	poetry run isort .
 
 lint:
 	poetry run flake8
