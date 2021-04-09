@@ -6,7 +6,7 @@ max-complexity = 10
 max-line-length = 90
 # local imports
 application-import-names = kak_plugins,tests
-import-order-style = pep8
+import-order-style = google
 # allow asserts in tests
 per-file-ignores =
     tests/learning/test_subprocess.py:S,ANN
