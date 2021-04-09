@@ -53,3 +53,6 @@ markers = [
     """os: tests that interact with the real OS and may have different behaviors \
     on different systems""",
 ]
+
+[tool.isort]
+profile = "google"
