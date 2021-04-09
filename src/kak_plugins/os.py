@@ -1,5 +1,5 @@
-import os
 from collections.abc import Callable
+import os
 
 
 def get_git_root(path_exists_function: Callable, current_path: str) -> str:

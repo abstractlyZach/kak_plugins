@@ -1,6 +1,6 @@
+from collections.abc import Callable
 import json
 import logging
-from collections.abc import Callable
 from typing import List
 
 from .. import line_range

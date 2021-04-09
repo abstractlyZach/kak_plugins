@@ -1,6 +1,6 @@
 import collections
-import logging
 from collections.abc import Callable
+import logging
 
 # represents a unit of work for writing to a clipboard
 ClipboardJob = collections.namedtuple("ClipboardJob", ["clipboard_command", "message"])
