@@ -51,7 +51,6 @@ def main(
         level=VERBOSITY_LOG_LEVELS[verbosity_level],
     )
     get_github_permalink(clipboard_command)
-    logging.info("=== script complete ===")
 
 
 def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
