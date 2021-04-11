@@ -1,7 +1,7 @@
 from collections.abc import Callable
 import json
 import logging
-from typing import List
+from typing import List, NamedTuple, Optional
 
 from .. import line_range
 
@@ -50,3 +50,61 @@ class SelectionDescription(object):
     @property
     def range(self) -> line_range.LineRange:
         return self._line_range
+
+    def __str__(self) -> str:
+        return str(self._line_range)
+
+
+class KakouneState(NamedTuple):
+    """Internal representation of Kakoune's state
+
+    This is a canonical list of everything we care about. I'll need to explore
+    other options if this ever becomes too big of a list. However, there doesn't
+    seem to be any huge overhead from getting multiple values from kcr
+    """
+
+    buffer_path: str
+    selection: SelectionDescription
+
+
+class KakouneExpansion(NamedTuple):
+    """Information from Kakoune that we can query
+
+    https://github.com/mawww/kakoune/blob/master/doc/pages/expansions.asciidoc
+    """
+
+    # kakoune's name for the expansion
+    expansion_name: str
+    # converts the expansion if it can be turned into something more useful than a string
+    parser: Optional[Callable]
+    # our internal name for the state
+    state_name: str
+    # TODO: add type if we want to query expansions that aren't values in the future
+
+
+EXPANSIONS = [
+    KakouneExpansion(expansion_name="buffile", parser=None, state_name="buffer_path"),
+    KakouneExpansion(
+        expansion_name="selection_desc",
+        parser=SelectionDescription,
+        state_name="selection",
+    ),
+]
+
+
+def get_state(kcr: KakouneCR) -> KakouneState:
+    """Call kcr to get the current state of Kakoune.
+
+    Requests all expansions in EXPANSIONS and parses them to get nice
+    python objects.
+    """
+    expansion_values = kcr.get([expansion.expansion_name for expansion in EXPANSIONS])
+    parsed_values = dict()
+    for expansion_definition, value in zip(EXPANSIONS, expansion_values):
+        state_name = expansion_definition.state_name
+        if expansion_definition.parser is None:
+            parsed_values[state_name] = value
+        else:
+            parsed_values[state_name] = expansion_definition.parser(value)
+        logging.debug(f'{state_name} is "{parsed_values[state_name]}"')
+    return KakouneState(**parsed_values)

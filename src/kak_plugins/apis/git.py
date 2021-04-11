@@ -2,7 +2,7 @@ import logging
 
 import git
 
-from .. import line_range
+from . import kak
 
 REMOTE = "origin"
 URL_REPLACEMENTS = {"git@github.com:": "https://github.com/"}
@@ -33,9 +33,10 @@ class RepoApi(object):
         return remote_url
 
     def get_permalink(
-        self, path_from_git_root: str, range: line_range.LineRange
+        self, path_from_git_root: str, kak_state: kak.KakouneState
     ) -> str:
         """Create a permalink for the editor's selection"""
         return (
-            f"{self.github_url}/blob/{self.current_branch}/{path_from_git_root}#{range}"
+            f"{self.github_url}/blob/{self.current_branch}/"
+            + f"{path_from_git_root}#{kak_state.selection}"
         )

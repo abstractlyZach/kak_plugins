@@ -56,11 +56,10 @@ def main(verbosity_level: int, clipboard_command: Optional[str]) -> None:
 def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
     # TODO: break this file up and stop ignoring coverage
     kcr = kak.KakouneCR(subprocess.run)
-    absolute_path, selection_desc = kcr.get(["buffile", "selection_desc"])
-    selection = kak.SelectionDescription(selection_desc)
-    git_root = kak_plugins_os.get_git_root(os.path.exists, absolute_path)
+    kak_state = kak.get_state(kcr)
+    git_root = kak_plugins_os.get_git_root(os.path.exists, kak_state.buffer_path)
     repo = git_api.RepoApi(git.Repo(git_root))
-    relative_path = os.path.relpath(absolute_path, git_root)
-    permalink = repo.get_permalink(relative_path, selection.range)
+    relative_path = os.path.relpath(kak_state.buffer_path, git_root)
+    permalink = repo.get_permalink(relative_path, kak_state)
     clipboard_job = clipboard.ClipboardJob(clipboard_command, permalink)
     clipboard.write_to_clipboard(subprocess.run, clipboard_job)

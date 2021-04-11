@@ -1,3 +1,4 @@
+from typing import Dict
 from unittest import mock
 
 import pytest
@@ -51,6 +52,12 @@ def test_parse_backwards_selection():
     assert selection.range == line_range.LineRange(29, 50)
 
 
+def test_selection_desc_str():
+    input_str = "55.55,66.66"
+    selection = kak.SelectionDescription(input_str)
+    assert str(selection) == "L55-L66"
+
+
 def test_kcr_get_makes_correct_call():
     runner_spy = mock.MagicMock()
     runner_spy.return_value.stdout = b"[]"
@@ -79,3 +86,20 @@ def test_get_handles_error():
     kcr = kak.KakouneCR(runner_stub)
     with pytest.raises(RuntimeError):
         kcr.get(["a", "b", "c"])
+
+
+class FakeKcr(object):
+    def __init__(self, get_dict: Dict[str, str] = None):
+        self._get_dict = get_dict
+
+    def get(self, values):
+        return [self._get_dict[value] for value in values]
+
+
+def test_kak_state():
+    kcr = FakeKcr(
+        get_dict={"buffile": "/home/kakuser/abc.txt", "selection_desc": "101.1,377.9"}
+    )
+    state = kak.get_state(kcr)
+    assert state.buffer_path == "/home/kakuser/abc.txt"
+    assert state.selection.range == line_range.LineRange(101, 377)
