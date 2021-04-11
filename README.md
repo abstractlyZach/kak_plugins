@@ -8,7 +8,7 @@ They say that for any given job, if [Python](https://www.python.org/) isn't the 
 
 [Kakoune](http://kakoune.org/) has a lot of amazing plugins and user-modes, and they're usually not written in Python.
 
-So, since I must be working with the second-best tool for the job, I thought I would go the whole 9 yards 😉. In true [abstractlyZach](https://www.github.com/abstractlyZach) fashion, this project includes:
+So, since I must be working with the second-best tool for the job, I thought I would go the whole 9 yards 😉 and overengineer the h*ck out of it. In true [abstractlyZach](https://www.github.com/abstractlyZach) fashion, this project includes:
 - reimplementations of awesome scripts that could be one-liners in `bash` with, like, 5 pipes
 - [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection)
 - readability as a priority
