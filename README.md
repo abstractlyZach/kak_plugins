@@ -4,7 +4,26 @@
 
 
 # Zach's Overengineered Kakoune Plugins
-I loved seeing the plugins that people write for [Kakoune](http://kakoune.org/), so I decided to write some on my own, but with extreme gusto. Sure, you could probaly accomplish the same results with a string of 7 shell commands, but where's the fun in that when you could have rigorous testing, fancy documentation, interactive menus and debugging, and powerful continuous integration?!
+They say that for any given job, if [Python](https://www.python.org/) isn't the best tool for the job, then it's the second-best tool for the job.
+
+[Kakoune](http://kakoune.org/) has a lot of amazing plugins and user-modes, and they're usually not written in Python.
+
+So, since I must be working with the second-best tool for the job, I thought I would go the whole 9 yards 😉. In true [abstractlyZach](https://www.github.com/abstractlyZach) fashion, this project includes:
+- reimplementations of awesome scripts that could be one-liners in `bash` with, like, 5 pipes
+- [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection)
+- readability as a priority
+- [composition over inheritance](https://realpython.com/inheritance-composition-python/)
+- rigorous testing
+- helpful command-line menus
+- milliseconds of extra run-time! Python is an interpreted language!
+- intense CI practices
+- linting and autoformatting
+- lots of documentation
+- [minimal use of Mocks](https://www.youtube.com/watch?v=rk-f3B-eMkI), maximal use of better test doubles like Fakes and Stubs
+- robust error-handling
+- fine-grained logging options
+
+Also, I was pretty excited about [kakoune.cr](https://github.com/alexherbo2/kakoune.cr), but I was super fuzzy on how to actually use it. Hopefully these plugins will serve as living documentation on some good ways to leverage this tool.
 
 ## Installation
 I recommend using [pipx](https://pipxproject.github.io/pipx/installation/) for installation. It allows you to install python packages on your machine in separate virtual environments without having to manage the virtual environments yourself. `pip` also works if you prefer that.
@@ -13,7 +32,7 @@ pipx install kak_plugins
 ```
 
 ## Dependencies
-* [Kakoune](http://kakoune.org/) of course
+* [Kakoune](http://kakoune.org/), of course 😄
 * [kakoune.cr](https://github.com/alexherbo2/kakoune.cr)
     * enables us to retrieve info from Kakoune
     * provides an interface to control Kakoune
