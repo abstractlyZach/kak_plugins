@@ -28,7 +28,7 @@ Also, I was pretty excited about [kakoune.cr](https://github.com/alexherbo2/kako
 ## Installation
 I recommend using [pipx](https://pipxproject.github.io/pipx/installation/) for installation. It allows you to install python packages on your machine in separate virtual environments without having to manage the virtual environments yourself. `pip` also works if you prefer that.
 ```
-pipx install kak_plugins
+pipx install kak-plugins
 ```
 
 ## Dependencies
