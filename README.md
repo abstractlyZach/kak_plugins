@@ -52,7 +52,7 @@ export CLIPBOARD="pbcopy"
 # Plugins
 
 ## github-permalink
-Create a permalink to a line or range of lines in a GitHub repo that matches your current selection in Kakoune. Then copy that permalink to your clipboard program.
+Create a permalink to a file on GitHub with lines pre-selected. [Example](https://github.com/abstractlyZach/kak_plugins/blob/main/src/kak_plugins/github_permalink.py#L26-L53). The selected line or range of lines matches your current selection in Kakoune and will be copied to your clipboard program.
 ```
 github-permalink --help
 ```
