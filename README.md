@@ -43,7 +43,7 @@ pipx install kak_plugins
 
 
 ## Setup
-There are some environment varibles you will need to define in order to use these plugins. You would probably define these in your `~/.bashrc`, `zshrc`, or `~/.profile`. I define mine [here](https://github.com/abstractlyZach/dotfiles/blob/master/common/.profile]
+There are some environment varibles you will need to define in order to use these plugins. You would probably define these in your `~/.bashrc`, `zshrc`, or `~/.profile`. I define mine [here](https://github.com/abstractlyZach/dotfiles/blob/master/common/.profile)
 ```
 # program that reads stdin and writes to your system clipboard
 export CLIPBOARD="pbcopy"
