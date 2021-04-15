@@ -1,6 +1,6 @@
 import pytest
 
-from kak_plugins import line_range
+from kak_plugins.utils import line_range
 
 
 def test_single_line_range():

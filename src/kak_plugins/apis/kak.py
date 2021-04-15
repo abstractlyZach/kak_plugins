@@ -3,7 +3,7 @@ import json
 import logging
 from typing import List, NamedTuple, Optional
 
-from .. import line_range
+from kak_plugins.utils import line_range
 
 
 class KakouneCR(object):

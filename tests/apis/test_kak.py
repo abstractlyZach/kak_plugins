@@ -3,8 +3,8 @@ from unittest import mock
 
 import pytest
 
-from kak_plugins import line_range
 from kak_plugins.apis import kak
+from kak_plugins.utils import line_range
 
 
 class RunSuccessStub(object):

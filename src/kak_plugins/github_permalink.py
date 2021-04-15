@@ -8,10 +8,10 @@ from typing import Optional
 import click
 import git
 
-from . import os as kak_plugins_os
-from .apis import clipboard
-from .apis import git as git_api
-from .apis import kak
+from kak_plugins.apis import clipboard
+from kak_plugins.apis import git as git_api
+from kak_plugins.apis import kak
+from kak_plugins.utils import os as kak_plugins_os
 
 DEFAULT_LOGFILE = "github-permalink.log"
 
