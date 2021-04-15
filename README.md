@@ -26,9 +26,21 @@ So, since I must be working with the second-best tool for the job, I thought I w
 Also, I was pretty excited about [kakoune.cr](https://github.com/alexherbo2/kakoune.cr), but I was super fuzzy on how to actually use it. Hopefully these plugins will serve as living documentation on some good ways to leverage this tool.
 
 ## Installation
+### as a user
 I recommend using [pipx](https://pipxproject.github.io/pipx/installation/) for installation. It allows you to install python packages on your machine in separate virtual environments without having to manage the virtual environments yourself. `pip` also works if you prefer that.
 ```
 pipx install kak-plugins
+```
+
+### as a developer
+We use [poetry](https://python-poetry.org/) to do package and dependency management. For bonus points, install it using `pipx` instead of their recommended method.
+```
+pipx install poetry
+
+git clone https://github.com/abstractlyZach/kak_plugins.git
+cd kak_plugins
+
+poetry install
 ```
 
 ## Dependencies
