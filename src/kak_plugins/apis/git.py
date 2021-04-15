@@ -2,7 +2,7 @@ import logging
 
 import git
 
-from . import kak
+from kak_plugins.apis import kak
 
 REMOTE = "origin"
 URL_REPLACEMENTS = {"git@github.com:": "https://github.com/"}
