@@ -1,6 +1,6 @@
 import pytest
 
-from kak_plugins import os
+from kak_plugins.utils import os
 
 PATHS_AND_ROOTS = {
     "/home/kak/workspace/kak_plugins/coolpath/function.py": "/home/kak/workspace/kak_plugins",
