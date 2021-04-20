@@ -4,6 +4,8 @@ from unittest import mock
 from kak_plugins.apis import git
 from tests import fakes
 
+FAKE_CONFIG = {"remotes": {"git@github.com": "https://github.com"}}
+
 
 class FakeRepo(object):
     """A fake of the PythonGit repo class"""
@@ -19,24 +21,26 @@ class FakeRepo(object):
 
 def test_init():
     """Raises no exceptions"""
-    git.RepoApi("abc")
+    git.RepoApi("abc", dict())
 
 
 def test_current_branch():
-    repo = git.RepoApi(FakeRepo(active_branch="mybranch"))
+    repo = git.RepoApi(FakeRepo(active_branch="mybranch"), dict())
     assert repo.current_branch == "mybranch"
 
 
 def test_remote_ssh_url():
     repo = git.RepoApi(
-        FakeRepo(remote_url="git@github.com:abstractlyZach/kak_plugins.git")
+        FakeRepo(remote_url="git@github.com:abstractlyZach/kak_plugins.git"),
+        FAKE_CONFIG,
     )
     assert repo.github_url == "https://github.com/abstractlyZach/kak_plugins"
 
 
 def test_remote_https_url():
     repo = git.RepoApi(
-        FakeRepo(remote_url="https://github.com/abstractlyZach/kak_plugins.git")
+        FakeRepo(remote_url="https://github.com/abstractlyZach/kak_plugins.git"),
+        FAKE_CONFIG,
     )
     assert repo.github_url == "https://github.com/abstractlyZach/kak_plugins"
 
@@ -46,7 +50,8 @@ def test_get_permalink():
         FakeRepo(
             remote_url="git@github.com:abstractlyZach/kak_plugins.git",
             active_branch="newbranch",
-        )
+        ),
+        FAKE_CONFIG,
     )
     kak_state = fakes.FakeKakState(selection=fakes.FakeSelectionDescription("L9"))
     expected = (

@@ -1,0 +1,4 @@
+[remotes]
+"git@github.com" = "https://github.com"
+# Autodesk enterprise git server
+"git@git.autodesk.com" = "https://git.autodesk.com"

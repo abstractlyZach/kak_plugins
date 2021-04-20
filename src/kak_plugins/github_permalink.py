@@ -7,13 +7,16 @@ from typing import Optional
 
 import click
 import git
+import toml
 
 from kak_plugins.apis import clipboard
 from kak_plugins.apis import git as git_api
 from kak_plugins.apis import kak
+from kak_plugins.utils import config
 from kak_plugins.utils import os as kak_plugins_os
 
 DEFAULT_LOGFILE = "github-permalink.log"
+CONFIG_PATH = "plugins.toml"
 
 # maps from verbosity level to log levels
 VERBOSITY_LOG_LEVELS = {
@@ -54,11 +57,12 @@ def main(verbosity_level: int, clipboard_command: Optional[str]) -> None:
 
 
 def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
-    # TODO: break this file up and stop ignoring coverage
+    # TODO: break this function up and stop ignoring coverage
+    configuration = config.read_config(toml, CONFIG_PATH)
     kcr = kak.KakouneCR(subprocess.run)
     kak_state = kak.get_state(kcr)
     git_root = kak_plugins_os.get_git_root(os.path.exists, kak_state.buffer_path)
-    repo = git_api.RepoApi(git.Repo(git_root))
+    repo = git_api.RepoApi(git.Repo(git_root), configuration)
     relative_path = os.path.relpath(kak_state.buffer_path, git_root)
     permalink = repo.get_permalink(relative_path, kak_state)
     clipboard_job = clipboard.ClipboardJob(clipboard_command, permalink)
