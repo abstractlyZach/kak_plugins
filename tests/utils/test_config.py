@@ -19,11 +19,11 @@ def test_read_calls_loader(mock_open):
 def test_read_can_parse_toml(mock_open):
     mock_open_context = io.StringIO(
         """
-        [[abc]]
+        [abc]
         a = "b"
         "git@github.com" = "https://github.com"
         """
     )
     mock_open.return_value.__enter__.return_value = mock_open_context
     result = config.read_config(toml, "filename doesn't matter")
-    assert result == {"abc": [{"a": "b", "git@github.com": "https://github.com"}]}
+    assert result == {"abc": {"a": "b", "git@github.com": "https://github.com"}}
