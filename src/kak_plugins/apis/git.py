@@ -23,7 +23,8 @@ class RepoApi(object):
         if "@" in remote_url:
             logging.debug(f"Remote URL is an ssh URL: {remote_url}")
             remote_url = self._get_github_base_url(remote_url)
-        remote_url = remote_url.rstrip(".git")
+        if remote_url.endswith(".git"):  # strip off .git
+            remote_url = remote_url[:-4]
         self._github_url = remote_url
 
     def _get_github_base_url(self, remote_url: str) -> str:
