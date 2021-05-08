@@ -1,18 +1,5 @@
 import abc
-
-
-class RunnerResult(abc.ABC):
-    """Store the output of a command"""
-
-    @property
-    @abc.abstractmethod
-    def stdout(self) -> str:
-        pass
-
-    @property
-    @abc.abstractmethod
-    def returncode(self) -> int:
-        pass
+from typing import List
 
 
 class Runner(abc.ABC):
@@ -23,5 +10,5 @@ class Runner(abc.ABC):
     """
 
     @abc.abstractmethod
-    def run(self, command: str) -> RunnerResult:
+    def run(self, command: List[str]) -> str:
         pass

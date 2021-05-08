@@ -31,3 +31,15 @@ def test_cant_find_git_root():
     """Raise an error when the file is not part of a git project"""
     with pytest.raises(RuntimeError):
         os.get_git_root(fake_os_path_exists, "/abc/def/ghi/jkl")
+
+
+def test_subprocess_runner_succeeds():
+    runner = os.SubprocessRunner()
+    result = runner.run(["echo", "hi"])
+    assert "hi" == result
+
+
+def test_subprocess_runner_fails():
+    runner = os.SubprocessRunner()
+    with pytest.raises(RuntimeError):
+        runner.run(["false"])
