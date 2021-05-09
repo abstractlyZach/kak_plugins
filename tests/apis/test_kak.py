@@ -7,22 +7,6 @@ from kak_plugins.apis import kak
 from kak_plugins.utils import line_range
 
 
-class RunnerSuccessStub(interfaces.Runner):
-    def __init__(self, stdout):
-        self._std_out = stdout
-
-    def run(self, command: List[str]):
-        return self._std_out
-
-
-class RunnerFailureStub(interfaces.Runner):
-    def __init__(self, exception_class):
-        self._exception_class = exception_class
-
-    def run(self, command: List[str]):
-        raise self._exception_class()
-
-
 def test_parse_single_width():
     input_str = "42.18,42.18"
     selection = kak.SelectionDescription(input_str)
@@ -45,6 +29,22 @@ def test_selection_desc_str():
     input_str = "55.55,66.66"
     selection = kak.SelectionDescription(input_str)
     assert str(selection) == "L55-L66"
+
+
+class RunnerSuccessStub(interfaces.Runner):
+    def __init__(self, stdout):
+        self._std_out = stdout
+
+    def run(self, command: List[str]):
+        return self._std_out
+
+
+class RunnerFailureStub(interfaces.Runner):
+    def __init__(self, exception_class):
+        self._exception_class = exception_class
+
+    def run(self, command: List[str]):
+        raise self._exception_class()
 
 
 def test_get_success():
