@@ -19,10 +19,15 @@ def get_git_root(path_exists_function: Callable, current_path: str) -> str:
 
 class SubprocessRunner(interfaces.Runner):
     def run(self, command: List[str]) -> str:
-        try:
-            result = subprocess.run(  # noqa: S603
-                command, capture_output=True, check=True
-            )
-        except subprocess.CalledProcessError:
-            raise RuntimeError(f"Command {command} failed.")
+        """Execute a command as a subprocess
+
+        Successful commands have their stdout returned. Unsuccessful commands
+        have their stderr raised as a RuntimeError.
+        """
+        # this command gets flagged as a security risk. We're not worried about code injection
+        # since this code should only get run by source code inside this project
+        result = subprocess.run(command, capture_output=True)  # noqa: S603
+        if result.returncode != 0:
+            error_message = str(result.stderr, encoding="utf-8").strip()
+            raise RuntimeError(f"Command {command} failed: {error_message}")
         return str(result.stdout, "utf-8").strip()
