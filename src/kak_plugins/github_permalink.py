@@ -55,7 +55,8 @@ def main(verbosity_level: int, clipboard_command: Optional[str]) -> None:
 
 def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
     # TODO: break this file up and stop ignoring coverage
-    kcr = kak.KakouneCR(subprocess.run)
+    runner = kak_plugins_os.SubprocessRunner()
+    kcr = kak.KakouneCR(runner)
     kak_state = kak.get_state(kcr)
     git_root = kak_plugins_os.get_git_root(os.path.exists, kak_state.buffer_path)
     repo = git_api.RepoApi(git.Repo(git_root))

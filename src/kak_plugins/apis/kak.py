@@ -3,14 +3,14 @@ import json
 import logging
 from typing import List, NamedTuple, Optional
 
+from kak_plugins import interfaces
 from kak_plugins.utils import line_range
 
 
 class KakouneCR(object):
     """Handles all calls to kakoune.cr"""
 
-    def __init__(self, runner: Callable) -> None:
-        """Stores a Callable that has the interface of subprocess.run()"""
+    def __init__(self, runner: interfaces.Runner) -> None:
         self._runner = runner
 
     def get(self, values: List[str]) -> List:
@@ -26,14 +26,9 @@ class KakouneCR(object):
             kcr_command.append("--value")
             kcr_command.append(value)
         logging.debug(f"running commmand: '{kcr_command}'")
-        result = self._runner(kcr_command, capture_output=True)
-        if result.returncode != 0:
-            error_message = str(result.stderr, encoding="utf-8").strip()
-            raise RuntimeError(f"kakoune.cr: {error_message}")
-        else:
-            kcr_output = str(result.stdout, encoding="utf-8").strip()
-            logging.debug(f"kcr output: {kcr_output}")
-            return json.loads(kcr_output)
+        kcr_output = self._runner.run(kcr_command)
+        logging.debug(f"kcr output: {kcr_output}")
+        return json.loads(kcr_output)
 
 
 class SelectionDescription(object):
