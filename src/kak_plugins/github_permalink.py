@@ -1,14 +1,13 @@
 #! python
 import logging
 import os
-import subprocess
 import sys
 from typing import Optional
 
 import click
 import git
 
-from kak_plugins.apis import clipboard
+from kak_plugins.apis import clipboard as clipboard_api
 from kak_plugins.apis import git as git_api
 from kak_plugins.apis import kak
 from kak_plugins.utils import os as kak_plugins_os
@@ -62,5 +61,6 @@ def get_github_permalink(clipboard_command: str) -> None:  # pragma: no cover
     repo = git_api.RepoApi(git.Repo(git_root))
     relative_path = os.path.relpath(kak_state.buffer_path, git_root)
     permalink = repo.get_permalink(relative_path, kak_state)
-    clipboard_job = clipboard.ClipboardJob(clipboard_command, permalink)
-    clipboard.write_to_clipboard(subprocess.run, clipboard_job)
+    clipboard_job = clipboard_api.ClipboardJob(clipboard_command, permalink)
+    clipboard = clipboard_api.Clipboard([clipboard_command], runner)
+    clipboard.write(clipboard_job.message)
