@@ -31,3 +31,10 @@ class SubprocessRunner(interfaces.Runner):
             error_message = str(result.stderr, encoding="utf-8").strip()
             raise RuntimeError(f"Command {command} failed: {error_message}")
         return str(result.stdout, "utf-8").strip()
+
+    def pipe(self, command: List[str], input: str) -> None:
+        """Pipe text into a command.
+
+        Ignores stdout if there's anything
+        """
+        subprocess.run(command, input=input, text=True, check=True)  # noqa: S603

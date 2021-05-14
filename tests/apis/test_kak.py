@@ -38,6 +38,9 @@ class RunnerSuccessStub(interfaces.Runner):
     def run(self, command: List[str]):
         return self._std_out
 
+    def pipe(self, command: List[str], input: str):
+        pass
+
 
 class RunnerFailureStub(interfaces.Runner):
     def __init__(self, exception_class):
@@ -45,6 +48,9 @@ class RunnerFailureStub(interfaces.Runner):
 
     def run(self, command: List[str]):
         raise self._exception_class()
+
+    def pipe(self, command: List[str], input: str):
+        pass
 
 
 def test_get_success():

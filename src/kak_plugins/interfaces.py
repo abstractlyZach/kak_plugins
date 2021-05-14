@@ -12,3 +12,7 @@ class Runner(abc.ABC):
     @abc.abstractmethod
     def run(self, command: List[str]) -> str:
         pass
+
+    @abc.abstractmethod
+    def pipe(self, command: List[str], input: str) -> None:
+        pass
